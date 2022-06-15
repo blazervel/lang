@@ -3,11 +3,23 @@
 namespace Blazervel\Lang;
 
 use Illuminate\Support\Facades\{ File, App, Lang as LaravelFacade };
-use Illuminate\Support\Str;
+use Illuminate\Support\{ Js, Str };
 
 class Lang
 {
-  static function generate(): array
+  public function generate(): string
+  {
+    $translations = $this->translations();
+    $js = Js::from(['translations' => $translations]);
+
+    return trim("
+      <script id=\"blazervel_lang\" type=\"text/javascript\">
+        const BlazervelLang = {$js};
+      </script>
+    ");
+  }
+
+  private function translations(): array
   {
     $translationFiles = File::files(
       lang_path(
