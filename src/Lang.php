@@ -51,7 +51,7 @@ class Lang
 
   private function translations(): array
   {
-    $translationFiles = File::files(
+    $translationFiles = File::allFiles(
       lang_path()
     );
 
