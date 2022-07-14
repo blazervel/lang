@@ -16,7 +16,7 @@ class Lang
       <script id=\"blazervel_lang\" type=\"text/javascript\">
         const BlazervelLang = {$js};
 
-        function lang(key, replace = {}, locale = '{{ app()->getLocale() }}', fallback = true) {
+        function lang(key, replace = {}, locale = '{{ app()->getLocale() }}', fallback = true, count = null) {
           const { translations } = typeof BlazervelLang !== 'undefined' ? BlazervelLang : globalThis?.BlazervelLang,
                 keys = key.split('.');
 
@@ -39,6 +39,14 @@ class Lang
             for (var key in replace) {
               translation = translation.replace(':' + key, replace[key]);
             };
+          };
+
+          count = count !== null && (Array.isArray(count) || count === Object(count)) 
+                    ? Object.values(count).length 
+                    : (typeof count === 'number' ? count : null)
+          
+          if (count !== null) {
+            // Support pluralization (https://laravel.com/docs/9.x/localization#pluralization)
           };
         
           return translation || key;
